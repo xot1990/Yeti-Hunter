@@ -30,13 +30,13 @@ public class CrabClamp : StateMachine
         if (mob.direction == 0)
         {
             mob.animator.Play("AttackLeft");
-            mob.audioSourse.PlayOneShot(mob.attack);
+            mob.audioSource.PlayOneShot(mob.attack);
             mob.PhaseTimer++;
         }
         else if (mob.direction == 1)
         {
             mob.animator.Play("AttackRight");
-            mob.audioSourse.PlayOneShot(mob.attack);
+            mob.audioSource.PlayOneShot(mob.attack);
             mob.PhaseTimer++;            
         }
         mob.ChangeState<PhaseWait>();

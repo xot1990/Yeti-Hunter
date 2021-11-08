@@ -20,8 +20,8 @@ public class AttackYeti : StateMachine
     public override void OnEnterState()
     {
         mob.animator.SetBool("Strike", true);
-        mob.Rbody.velocity = Vector2.zero;
-        mob.audioSourse.clip = mob.attack;
+        mob.body.velocity = Vector2.zero;
+        mob.audioSource.clip = mob.attack;
     }
 
     public override void OnUpdateState()
@@ -34,7 +34,7 @@ public class AttackYeti : StateMachine
 
     public override void OnExitState()
     {
-        mob.audioSourse.clip = null;
+        mob.audioSource.clip = null;
         mob.animator.SetBool("Strike", false);
     }
 

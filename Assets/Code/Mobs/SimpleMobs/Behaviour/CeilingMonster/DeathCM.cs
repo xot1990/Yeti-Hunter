@@ -20,8 +20,8 @@ public class DeathCM : StateMachine
     public override void OnEnterState()
     {
         mob.animator.SetBool("Dead", true);
-        mob.audioSourse.clip = mob.deth;
-        Destroy(mob.Rbody);
+        mob.audioSource.clip = mob.deth;
+        Destroy(mob.body);
     }
 
     public override void OnUpdateState()

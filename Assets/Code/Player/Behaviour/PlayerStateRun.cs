@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateIdle : StateMachine
+public class PlayerStateRun : StateMachine
 {
     private PlayerControler _controler;
     private Game _game;
@@ -24,26 +24,49 @@ public class PlayerStateIdle : StateMachine
 
     public override void OnEnterState()
     {
-        _controler.animator.Play("Idle");
+        _controler.animator.Play("Run");
     }
 
     public override void OnUpdateState()
     {
         if (!_game.isPause)
-        {        
+        {
             if (Input.GetKey(KeyCode.A))
             {
-                _controler.ChangeState<PlayerStateRun>();
+                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                if (Mathf.Abs(_controler.body.velocity.x) < _controler.maxSpeed)
+                {
+                    Vector3 f = transform.right * Time.deltaTime * _controler.speed;
+                    _controler.body.AddForce(f, ForceMode2D.Impulse);
+                }
+            }
+
+            if (Input.GetKeyUp(KeyCode.A))
+            {
+                _controler.ChangeState<PlayerStateIdle>();
+                _controler.audioSource.Stop();
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                _controler.ChangeState<PlayerStateRun>();
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                if (Mathf.Abs(_controler.body.velocity.x) < _controler.maxSpeed)
+                {
+                    Vector3 f = transform.right * Time.deltaTime * _controler.speed;
+                    _controler.body.AddForce(f, ForceMode2D.Impulse);
+                }                
             }
+
+            if (Input.GetKeyUp(KeyCode.D))
+            {
+                _controler.ChangeState<PlayerStateIdle>();
+                _controler.audioSource.Stop();
+            }                        
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _controler.animator.SetBool("Lending", false);
+
+                _controler.ChangeState<PlayerStateJump>();
                 _controler.animator.SetBool("StartingJump", true);
                 _controler.body.AddForce(Vector2.up * 2 * _controler.maxSpeed, ForceMode2D.Impulse);
             }

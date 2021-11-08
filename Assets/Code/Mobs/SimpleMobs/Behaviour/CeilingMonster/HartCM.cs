@@ -19,14 +19,14 @@ public class HartCM : StateMachine
 
     public override void OnEnterState()
     {
-        mob.Rbody.velocity = Vector2.zero;
+        mob.body.velocity = Vector2.zero;
         mob.animator.SetBool("Hit", true);
-        mob.audioSourse.clip = mob.hart;
+        mob.audioSource.clip = mob.hart;
     }
 
     public override void OnUpdateState()
     {
-        mob.audioSourse.Play();
+        mob.audioSource.Play();
         mob.ChangeState<RunYeti>();
     }
 

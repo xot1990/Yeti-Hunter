@@ -11,13 +11,13 @@ public class AbstractUnit : MonoBehaviour, TakenDamage
     public float speed;
     public float maxSpeed;
     public bool isRuning;
-    public AudioSource audioSourse;
+    public AudioSource audioSource;
     public StateMachine state;
     public Animator animator;
-    public Rigidbody2D Rbody;
+    public Rigidbody2D body;
     public Transform eya;
     public Transform foot;
-    public Transform HealsBar;
+    public Transform healsBar;
     public AudioClip deth;
     public AudioClip hart;
     public AudioClip step;
@@ -28,9 +28,9 @@ public class AbstractUnit : MonoBehaviour, TakenDamage
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        Rbody = GetComponent<Rigidbody2D>();
-        audioSourse = GetComponent<AudioSource>();
-        HealsBar = GetComponentInChildren<HealsBar>().transform;
+        body = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+        healsBar = GetComponentInChildren<HealsBar>().transform;
         eya = GetComponentInChildren<Eya>().transform;
         foot = GetComponentInChildren<Foot>().transform;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -40,7 +40,7 @@ public class AbstractUnit : MonoBehaviour, TakenDamage
     {
         if (direction == 0) direction = 1;
         else if (direction == 1) direction = 0;
-        Rbody.velocity = Vector2.zero;
+        body.velocity = Vector2.zero;
         transform.rotation = Quaternion.Euler(0, 180 * direction, 0);
     }
 
@@ -53,14 +53,14 @@ public class AbstractUnit : MonoBehaviour, TakenDamage
 
     public void PlaySound()
     {
-        audioSourse.Play();
+        audioSource.Play();
     }
     
     public void Hit(int value)
     {
         hp -= value;
-        audioSourse.clip = hart;
-        HealsBar.transform.localPosition = new Vector3(-1 + (hp / maxHp), 0, 0);
+        audioSource.clip = hart;
+        healsBar.transform.localPosition = new Vector3(-1 + (hp / maxHp), 0, 0);
     }
 
     public void Death()

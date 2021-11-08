@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateIdle : StateMachine
+public class PlayerStateAttack : StateMachine
 {
+    
     private PlayerControler _controler;
     private Game _game;
 
@@ -30,7 +31,7 @@ public class PlayerStateIdle : StateMachine
     public override void OnUpdateState()
     {
         if (!_game.isPause)
-        {        
+        {
             if (Input.GetKey(KeyCode.A))
             {
                 _controler.ChangeState<PlayerStateRun>();
@@ -75,3 +76,4 @@ public class PlayerStateIdle : StateMachine
         return true;
     }
 }
+

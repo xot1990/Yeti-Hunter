@@ -21,7 +21,7 @@ public class CrabRun : StateMachine
     {
         mob.currentState = GetComponent<CrabRun>();
         mob.isRuning = true;
-        mob.audioSourse.clip = mob.step;
+        mob.audioSource.clip = mob.step;
         if (mob.direction == 0)
         {
             mob.animator.SetBool("RunR", false);
@@ -32,17 +32,17 @@ public class CrabRun : StateMachine
             mob.animator.SetBool("RunL", false);
             mob.animator.SetBool("RunR", true);
         }
-        mob.audioSourse.Play();
+        mob.audioSource.Play();
     }
 
     public override void OnUpdateState()
     {
         if (mob.direction == 0)
         {
-            if (Mathf.Abs(mob.Rbody.velocity.x) < mob.maxSpeed && mob.isRuning)
+            if (Mathf.Abs(mob.body.velocity.x) < mob.maxSpeed && mob.isRuning)
             {
                 Vector2 f = -transform.right * Time.deltaTime * mob.speed;
-                mob.Rbody.AddForce(f, ForceMode2D.Impulse);
+                mob.body.AddForce(f, ForceMode2D.Impulse);
             }
 
             if (Physics2D.OverlapArea(new Vector2(mob.transform.position.x - 1.5f, mob.transform.position.y - 0.1f), new Vector2(mob.transform.position.x, mob.transform.position.y + 0.1f), ContactList.layerMaskGround))
@@ -52,10 +52,10 @@ public class CrabRun : StateMachine
         }
         else if (mob.direction == 1)
         {
-            if (Mathf.Abs(mob.Rbody.velocity.x) < mob.maxSpeed && mob.isRuning)
+            if (Mathf.Abs(mob.body.velocity.x) < mob.maxSpeed && mob.isRuning)
             {
                 Vector2 f = transform.right * Time.deltaTime * mob.speed;
-                mob.Rbody.AddForce(f, ForceMode2D.Impulse);
+                mob.body.AddForce(f, ForceMode2D.Impulse);
             }
 
             if (Physics2D.OverlapArea(new Vector2(mob.transform.position.x, mob.transform.position.y - 0.1f), new Vector2(mob.transform.position.x + 1.5f, mob.transform.position.y + 0.1f), ContactList.layerMaskGround))
@@ -71,7 +71,7 @@ public class CrabRun : StateMachine
         mob.animator.SetBool("RunR", false);
         mob.animator.SetBool("RunL", false);
         mob.isRuning = false;
-        mob.audioSourse.clip = null;
+        mob.audioSource.clip = null;
     }
 
    

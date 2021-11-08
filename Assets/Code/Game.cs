@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 
-public class Game : MonoBehaviour
+public sealed class Game : MonoBehaviourService<Game>
 {
-    public GameObject Menu;
+    public GameObject menu;
+    public bool isPause;
 
-    void Awake()
+    protected override void OnCreateService()
     {
         ProjectileData.ProjectileList.Initialize();
     }
+
+    protected override void OnDestroyService()
+    {
+    }
+
 
     void Start()
     {
@@ -20,7 +26,11 @@ public class Game : MonoBehaviour
     
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (menu.activeInHierarchy) menu.SetActive(false);
+            else menu.SetActive(true);
+        }
     }
     
 }

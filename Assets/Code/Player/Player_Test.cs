@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Interfaces;
@@ -9,8 +9,8 @@ public class Player_Test : MonoBehaviour, TakenDamage
     Rigidbody2D body;    
     public float speed;       
     bool ShootAnima;
-    public GameObject RangeStrike;
-    public Transform StrikePoint;
+    public GameObject rangeStrike;
+    public Transform strikePoint;
     public int HP = 10;
     public int MaxHp = 10;
     Animator anim;
@@ -30,8 +30,6 @@ public class Player_Test : MonoBehaviour, TakenDamage
 
     void Start()
     {
-        
-        mask = 8;
         anim = GetComponentInChildren<Animator>();
         body = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
@@ -102,12 +100,12 @@ public class Player_Test : MonoBehaviour, TakenDamage
 
             if (Input.GetKey(KeyCode.Q))
             {
-                StrikePoint.transform.rotation = Quaternion.Euler(0, 0, 45);
+                strikePoint.transform.rotation = Quaternion.Euler(0, 0, 45);
             }
 
             if(Input.GetKeyUp(KeyCode.Q))
             {
-                StrikePoint.transform.rotation = Quaternion.Euler(0, 0, 0);
+                strikePoint.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && onLend)
@@ -163,7 +161,7 @@ public class Player_Test : MonoBehaviour, TakenDamage
 
     public void StrikeUp()
     {
-        GameObject strike = Instantiate(RangeStrike, StrikePoint.transform.position, StrikePoint.transform.rotation);
+        GameObject strike = Instantiate(rangeStrike, strikePoint.transform.position, strikePoint.transform.rotation);
         strike.GetComponentInChildren<Projectile>().id = 0;
         strike.GetComponentInChildren<Rigidbody2D>().velocity = strike.transform.right * 5;
         anim.SetBool("Strike", false);

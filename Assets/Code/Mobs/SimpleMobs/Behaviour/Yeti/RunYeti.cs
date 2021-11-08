@@ -21,15 +21,15 @@ public class RunYeti : StateMachine
     {
         mob.animator.SetBool("Run", true);
         mob.isRuning = true;
-        mob.audioSourse.clip = mob.step;
+        mob.audioSource.clip = mob.step;
     }
 
     public override void OnUpdateState()
     {
-        if (Mathf.Abs(mob.Rbody.velocity.x) < mob.maxSpeed && mob.isRuning)
+        if (Mathf.Abs(mob.body.velocity.x) < mob.maxSpeed && mob.isRuning)
         {
             Vector3 f = transform.right * Time.deltaTime * mob.speed;
-            mob.Rbody.AddForce(f, ForceMode2D.Impulse);
+            mob.body.AddForce(f, ForceMode2D.Impulse);
         }
 
         if (!Physics2D.OverlapArea(new Vector2(mob.foot.position.x, mob.foot.position.y), new Vector2(mob.foot.position.x, mob.foot.position.y - 0.5f), ContactList.layerMaskGround))
@@ -50,7 +50,7 @@ public class RunYeti : StateMachine
 
     public override void OnExitState()
     {
-        mob.audioSourse.clip = null;
+        mob.audioSource.clip = null;
         mob.animator.SetBool("Run", false);
         mob.isRuning = false;
     }

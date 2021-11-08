@@ -25,8 +25,8 @@ public class FrostCrab : AbstractBoss
 
         GetComponent<Collider2D>().enabled = false;        
         Vector3 f = transform.up * Time.deltaTime * speed/6;
-        Rbody.AddForce(f, ForceMode2D.Impulse);
-        Rbody.gravityScale = 1;
+        body.AddForce(f, ForceMode2D.Impulse);
+        body.gravityScale = 1;
         StartCoroutine(DelGo());
         FindObjectOfType<Player_Test>().pause = true;
     }
@@ -61,7 +61,7 @@ public class FrostCrab : AbstractBoss
 
     public IEnumerator AnimHit()
     {        
-        audioSourse.PlayOneShot(hart);
+        audioSource.PlayOneShot(hart);
         float t = 0;
         for (int i = 0; i < 2; i++)
         {
