@@ -24,7 +24,7 @@ public class PlayerStateIdle : StateMachine
 
     public override void OnEnterState()
     {
-        _controler.animator.Play("Idle");
+        
     }
 
     public override void OnUpdateState()
@@ -43,25 +43,17 @@ public class PlayerStateIdle : StateMachine
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _controler.animator.SetBool("Lending", false);
-                _controler.animator.SetBool("StartingJump", true);
-                _controler.body.AddForce(Vector2.up * 2 * _controler.maxSpeed, ForceMode2D.Impulse);
+                _controler.ChangeState<PlayerStateJump>();
             }
 
-            if (Input.GetKeyUp(KeyCode.Space))
+            if (_controler.body.velocity.y < -0.5f)
             {
-
+                _controler.ChangeState<PlayerStateJump>();
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                _controler.audioSource.clip = _controler.attack;
-                if (onLend()) _controler.animator.SetBool("Strike", true);
-            }
-
-            if (Input.GetKeyUp(KeyCode.Mouse0))
-            {
-                if (onLend()) _controler.animator.SetBool("Strike", false);
+                if (onLend()) _controler.ChangeState<PlayerStateAttack>();
             }
         }
     }
@@ -72,6 +64,8 @@ public class PlayerStateIdle : StateMachine
 
     private bool onLend()
     {
-        return true;
+        return Physics2D.OverlapCircle(_controler.foot.position, 0.1f, _game.layerMaskGround);
     }
+
+    
 }

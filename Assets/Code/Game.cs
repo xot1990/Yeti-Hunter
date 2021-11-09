@@ -7,14 +7,21 @@ public sealed class Game : MonoBehaviourService<Game>
 {
     public GameObject menu;
     public bool isPause;
+    public LayerMask layerMaskGround;
+    public LayerMask layerMaskEnemy;
+    public LayerMask layerMaskLava;
 
     protected override void OnCreateService()
     {
         ProjectileData.ProjectileList.Initialize();
+        layerMaskEnemy = LayerMask.GetMask("Enemy");
+        layerMaskGround = LayerMask.GetMask("Ground");
+        layerMaskLava = LayerMask.GetMask("Lava");
     }
 
     protected override void OnDestroyService()
     {
+
     }
 
 

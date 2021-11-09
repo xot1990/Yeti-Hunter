@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateAttack : StateMachine
+public class PlayerStateLavaDeath : StateMachine
 {
-    
     private PlayerControler _controler;
     private Game _game;
-    private float attackDelay = 0.2f;
+    private float deathTimer = 2f;
 
     private void Awake()
     {
@@ -26,26 +25,26 @@ public class PlayerStateAttack : StateMachine
 
     public override void OnEnterState()
     {
-        _controler.animator.Play("Attack");
+        _controler.animator.Play("LavaDeath");
     }
 
     public override void OnUpdateState()
     {
         if (!_game.isPause)
         {
-            attackDelay -= Time.deltaTime;
+            deathTimer -= Time.deltaTime;
 
-            if (attackDelay < 0)
-            {
-                attackDelay = 0.2f;
-                _controler.ChangeState<PlayerStateIdle>();
-            }
+            if (deathTimer < 0)
+                _controler.menu.SetActive(true);
         }
     }
 
     public override void OnExitState()
     {
+
     }
 
-}
+    
 
+
+}

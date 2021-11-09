@@ -7,6 +7,7 @@ public class PlayerStateJump : StateMachine
     
     private PlayerControler _controler;
     private Game _game;
+    private float _jumpDelay = 0.1f;
 
     private void Awake()
     {
@@ -25,55 +26,74 @@ public class PlayerStateJump : StateMachine
 
     public override void OnEnterState()
     {
-        _controler.animator.Play("Idle");
+        if (_controler.body.velocity.y < -0.5f)
+        {
+            _controler.animator.Play("DownJump");
+        }
+        else
+        {
+            _controler.body.AddForce(Vector2.up * _controler.jumpPower, ForceMode2D.Impulse);
+            _controler.animator.Play("Jump");
+            _controler.audioSource.clip = _controler.jump;
+            _controler.PlaySound();
+        }
     }
 
     public override void OnUpdateState()
     {
         if (!_game.isPause)
         {
+            _jumpDelay -= Time.deltaTime;
+
             if (Input.GetKey(KeyCode.A))
             {
-                _controler.ChangeState<PlayerStateRun>();
+                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                if (Mathf.Abs(_controler.body.velocity.x) < _controler.maxSpeed)
+                {
+                    Vector3 f = transform.right * Time.deltaTime * _controler.speed;
+                    _controler.body.AddForce(f, ForceMode2D.Impulse);
+                }
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                _controler.ChangeState<PlayerStateRun>();
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                if (Mathf.Abs(_controler.body.velocity.x) < _controler.maxSpeed)
+                {
+                    Vector3 f = transform.right * Time.deltaTime * _controler.speed;
+                    _controler.body.AddForce(f, ForceMode2D.Impulse);
+                }
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (_controler.body.velocity.y < -1)
             {
-                _controler.animator.SetBool("Lending", false);
-                _controler.animator.SetBool("StartingJump", true);
-                _controler.body.AddForce(Vector2.up * 2 * _controler.maxSpeed, ForceMode2D.Impulse);
+                _controler.animator.Play("DownJump");
             }
 
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
+            if (onLend() && _jumpDelay < 0)
+                _controler.ChangeState<PlayerStateIdle>();
 
-            }
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (onLava())
             {
-                _controler.audioSource.clip = _controler.attack;
-                if (onLend()) _controler.animator.SetBool("Strike", true);
-            }
-
-            if (Input.GetKeyUp(KeyCode.Mouse0))
-            {
-                if (onLend()) _controler.animator.SetBool("Strike", false);
+                _controler.ChangeState<PlayerStateLavaDeath>();
             }
         }
     }
 
     public override void OnExitState()
     {
+        _jumpDelay = 0.1f;
+        _controler.animator.Play("LendingJump");
     }
 
     private bool onLend()
     {
-        return true;
+        return Physics2D.OverlapCircle(_controler.foot.position,0.1f,_game.layerMaskGround);
+    }
+
+    private bool onLava()
+    {
+        return Physics2D.OverlapCircle(_controler.foot.position, 0.1f, _game.layerMaskLava);
     }
 }
 

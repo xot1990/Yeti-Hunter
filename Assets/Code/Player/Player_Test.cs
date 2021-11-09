@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using Interfaces;
 using UnityEngine;
 
-public class Player_Test : MonoBehaviour, TakenDamage
+public class Player_Test : MonoBehaviour
 {
     Rigidbody2D body;    
     public float speed;       
@@ -147,25 +147,11 @@ public class Player_Test : MonoBehaviour, TakenDamage
         Destroy(gameObject);
     }
 
-    private void OnDestroy()
-    {
-        Menu.SetActive(true);
-    }
+    
 
-    public void Hit(int value)
-    {
-        HP -= value;
-        audioSource.clip = hart;
-        HealsBar.transform.localPosition = new Vector3(-1 + ((float)HP / (float)MaxHp),0,0);
-    }
+    
 
-    public void StrikeUp()
-    {
-        GameObject strike = Instantiate(rangeStrike, strikePoint.transform.position, strikePoint.transform.rotation);
-        strike.GetComponentInChildren<Projectile>().id = 0;
-        strike.GetComponentInChildren<Rigidbody2D>().velocity = strike.transform.right * 5;
-        anim.SetBool("Strike", false);
-    }
+    
 
     
 
@@ -193,25 +179,7 @@ public class Player_Test : MonoBehaviour, TakenDamage
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "Rock")
-        {
-            anim.SetBool("Hit", true);
-            Hit(1);
-        }
-
-        if (collision.transform.tag == "Hit" && HP > 0)
-        {
-            anim.SetBool("Hit", true);
-            Hit(1);
-        }
-
-        if (HP <= 0)
-        {
-            anim.Play("Dead 1");
-        }
-    }
+    
 
     public void StopHit()
     {
